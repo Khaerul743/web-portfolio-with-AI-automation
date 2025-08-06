@@ -1,0 +1,8 @@
+.env
+__pycache__
+venv
+.venv
+documents/my_profile.txt
+my_profile.txt
+migrations
+proto.py
