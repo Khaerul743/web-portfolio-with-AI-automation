@@ -1,0 +1,488 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "5e9ea2bd-0c3d-4ff2-867f-a8233b532157",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -32
+      ],
+      "id": "55140c65-5d08-402c-9121-9ae9e66b82fa",
+      "name": "Webhook",
+      "webhookId": "5e9ea2bd-0c3d-4ff2-867f-a8233b532157"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67ae8032-5a6a-40ea-a552-a9b9e2f0f636",
+              "name": "body.header.hook",
+              "value": "={{ $json.body.header.hook }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        -224
+      ],
+      "id": "a5a3e30f-ba07-45be-bff9-515634dfd837",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6ce45c4a-83e2-4408-a3aa-3c1d546b8602",
+              "name": "purpose",
+              "value": "={{ $json.body.header.purpose }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        -80
+      ],
+      "id": "0802db42-fc32-450c-b723-0cdbd657e45c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c83854de-dcdc-4dad-9f66-996df05a585e",
+              "name": "body",
+              "value": "={{ $json.body.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        80
+      ],
+      "id": "f25ae776-696e-4457-a0c3-24c950684cc4",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b41b1e2-86fe-4a6c-89ff-cf5c2371a33b",
+              "name": "footer",
+              "value": "={{ $json.body.footer }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        224
+      ],
+      "id": "2e591cef-27b7-4644-b6bc-31993764b6a3",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "text": "=HOOK\n{{ $json.body.header.hook }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        -224
+      ],
+      "id": "2b674853-98f1-45be-b65f-982ae1fa6ba7",
+      "name": "Send a text message",
+      "webhookId": "88f145ec-7495-460e-bccc-b222a4dc20cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "AuMzFvTVFb2HVUWA",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=PURPOSE\n{{ $json.purpose }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "a137806a-9282-4ca2-ad56-91b4a1dcb6a2",
+      "name": "Send a text message1",
+      "webhookId": "88f145ec-7495-460e-bccc-b222a4dc20cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "AuMzFvTVFb2HVUWA",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        464
+      ],
+      "id": "020dc049-d940-4092-90f4-cf35baa4c400",
+      "name": "Telegram Trigger",
+      "webhookId": "1a22eafb-bec6-4186-ac11-3f1d8ec0c0fc",
+      "credentials": {
+        "telegramApi": {
+          "id": "8QSCZKpayfQwplRL",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Berikut adalah pesan dari user: {{ $json.message }}\nPilih tool yang cocok.",
+        "options": {
+          "systemMessage": "Kamu adalah asisten pribadi.\n\ngoal:\n - Tugas kamu adalah berinteraksi dengan agent pembuat blog.\n\ntools yang tersedia:\n- create_blog: digunakan untuk menyuruh agent pembuat blog membuat blog.\n- send_message: digunakan untuk menyampaikan pesan user ke agent pembuat blog, contoh: mengkoreksi blog atau konfirmasi dari user.\n\npanggil user dengan panggilan tuan."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        384,
+        464
+      ],
+      "id": "a1c616f5-bd45-4749-a45a-940d9365bb19",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Gunakan tool ini untuk menyuruh agent membuat blog.",
+        "method": "POST",
+        "url": "http://host.docker.internal:5000/api/agent/generate-blog",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "agent-key",
+              "value": "erl_doiadnafkfsnsfkjnsfeionnb_fnfsoefnionfnsfkjdf"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "topic",
+              "value": "={{ $('Edit Fields4').item.json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        704
+      ],
+      "id": "586234e4-e4df-4795-948a-f4157b65c3cf",
+      "name": "create_blog"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Digunakan untuk menyampaikan pesan user ke agent pembuat blog.",
+        "method": "POST",
+        "url": "http://host.docker.internal:5000/api/agent/human-response",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "agent-key",
+              "value": "erl_doiadnafkfsnsfkjnsfeionnb_fnfsoefnionfnsfkjdf"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $('Edit Fields4').item.json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        704
+      ],
+      "id": "41c29896-0afb-463c-9258-2e335d042c7f",
+      "name": "send_message"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff2ba5e2-adc0-462d-a312-829ed49e2ff6",
+              "name": "message",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        464
+      ],
+      "id": "261f2c6d-07b3-4721-a5c7-e6b87707b07e",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        736,
+        464
+      ],
+      "id": "40d35cbb-a2ee-4dfb-98d1-0ff4ea9e525f",
+      "name": "Send a text message2",
+      "webhookId": "2e9c5150-8607-4949-971d-8263e5ea4434",
+      "credentials": {
+        "telegramApi": {
+          "id": "8QSCZKpayfQwplRL",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=Body\n{{ $json.body }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        80
+      ],
+      "id": "cbe1db39-c3bd-48fa-8923-52738905fc72",
+      "name": "Send a text message3",
+      "webhookId": "88f145ec-7495-460e-bccc-b222a4dc20cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "AuMzFvTVFb2HVUWA",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=FOOTER\n{{ $json.footer }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        224
+      ],
+      "id": "70242f9a-e55b-473c-ba7d-40e623a01e56",
+      "name": "Send a text message4",
+      "webhookId": "88f145ec-7495-460e-bccc-b222a4dc20cc",
+      "credentials": {
+        "telegramApi": {
+          "id": "AuMzFvTVFb2HVUWA",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Send a text message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Send a text message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_blog": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_message": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bfb3d527-5f18-416d-8970-1db5ef54f17e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "865ac973798a8eb7f71c41106b9d3d96ddf40ae64ef36a54be6afb51d6526d5c"
+  },
+  "id": "9FHM1iIVurYCG8n8",
+  "tags": []
+}
