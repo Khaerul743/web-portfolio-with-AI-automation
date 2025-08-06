@@ -102,7 +102,7 @@ npm run dev
 
 ### 3. n8n & Telegram
 
-- Deploy n8n (bisa via Docker, VPS, atau cloud).
+- Deploy n8n (bisa via Docker, VPS, atau cloud) atau menggunakan ngrok untuk di local.
 - Integrasikan n8n dengan Telegram Bot API dan backend Flask (lihat dokumentasi n8n untuk setup webhook dan workflow).
 - Pastikan endpoint backend dapat diakses oleh n8n.
 
